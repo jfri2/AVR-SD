@@ -1,13 +1,16 @@
-//**************************************************************
-// ****** FUNCTIONS FOR SD RAW DATA TRANSFER *******
-//**************************************************************
-//Controller: ATmega32 (Clock: 8 Mhz-internal)
-//Compiler	: AVR-GCC (winAVR with AVRStudio)
-//Version 	: 2.3
+//*******************************************************
+// **** ROUTINES FOR FAT32 IMPLEMATATION OF SD CARD ****
+//**********************************************************
+//Controller: ATmega328p (Clock: 16 Mhz-internal)
+//Compiler	: AVR-GCC (Atmel Studio 6.2)
+//Version 	: 0.1
 //Author	: CC Dharmani, Chennai (India)
+//Ported by : Fritz, John (USA)
 //			  www.dharmanitech.com
-//Date		: 08 May 2010
-//**************************************************************
+//Date		: 01 June 2015
+//********************************************************
+
+//Link to the original Post: http://www.dharmanitech.com/2009/01/sd-card-interfacing-with-atmega8-fat32.html
 
 //**************************************************
 // ***** SOURCE FILE : SD_routines.c ******

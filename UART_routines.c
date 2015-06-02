@@ -1,13 +1,16 @@
-//**************************************************************
-//******** FUNCTIONS FOR SERIAL COMMUNICATION USING UART *******
-//**************************************************************
-//Controller: ATmega32 (Clock: 8 Mhz-internal)
-//Compiler	: AVR-GCC (winAVR with AVRStudio)
-//Version 	: 2.3
+//*******************************************************
+// **** ROUTINES FOR FAT32 IMPLEMATATION OF SD CARD ****
+//**********************************************************
+//Controller: ATmega328p (Clock: 16 Mhz-internal)
+//Compiler	: AVR-GCC (Atmel Studio 6.2)
+//Version 	: 0.1
 //Author	: CC Dharmani, Chennai (India)
+//Ported by : Fritz, John (USA)
 //			  www.dharmanitech.com
-//Date		: 08 May 2010
-//**************************************************************
+//Date		: 01 June 2015
+//********************************************************
+
+//Link to the original Post: http://www.dharmanitech.com/2009/01/sd-card-interfacing-with-atmega8-fat32.html
 
 //**************************************************
 // ***** SOURCE FILE : UART_routines.c ******
@@ -19,18 +22,17 @@
 
 //**************************************************
 //UART0 initialize
-//baud rate: 19200  (for controller clock = 8MHz)
+//baud rate: 115200  (for controller clock = 16MHz)
 //char size: 8 bit
 //parity: Disabled
 //**************************************************
 void uart0_init(void)
 {
- UCSRB = 0x00; //disable while setting baud rate
- UCSRA = 0x00;
- UCSRC = (1 << URSEL) | 0x06;
- UBRRL = 0x19; //set baud rate lo
- UBRRH = 0x00; //set baud rate hi
- UCSRB = 0x18;
+    UCSR0A = 0x00;
+    UCSR0B = 0x18;			// enable UART TX and RX
+    UCSR0C = 0x06;			// set the UART for N, 8, 1
+    UBRR0L = 8;				// set BAUD Rate for 115200 with 16MHz clock
+    UBRR0H = 0;
 }
 
 //**************************************************
@@ -53,9 +55,11 @@ unsigned char receiveByte( void )
 //***************************************************
 void transmitByte( unsigned char data )
 {
-	while ( !(UCSRA & (1<<UDRE)) )
-		; 			                /* Wait for empty transmit buffer */
-	UDR = data; 			        /* Start transmition */
+    while ( (UCSR0A & (1<<RXC0)) == 0 )			    // wait until the received character flag is set
+    {
+    }
+
+    data = UDR0;
 }
 
 

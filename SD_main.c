@@ -1,17 +1,18 @@
-//***********************************************************
-// **** MAIN routine FOR Interfacing microSD/SDHC CARD ****
-//***********************************************************
-//Controller: ATmega32 (Clock: 8 Mhz-internal)
-//Compiler	: AVR-GCC (winAVR with AVRStudio)
-//Version 	: 2.3
+//*******************************************************
+// **** ROUTINES FOR FAT32 IMPLEMENTATION OF SD CARD ****
+//**********************************************************
+//Controller: ATmega328p (Clock: 16 Mhz-internal)
+//Compiler	: AVR-GCC (Atmel Studio 6.2)
+//Version 	: 0.1
 //Author	: CC Dharmani, Chennai (India)
+//Ported by : Fritz, John (USA)
 //			  www.dharmanitech.com
-//Date		: 08 May 2010
-//***********************************************************
+//Date		: 01 June 2015
+//********************************************************
 
-//Link to the Post: http://www.dharmanitech.com/2009/01/sd-card-interfacing-with-atmega8-fat32.html
+//Link to the original Post: http://www.dharmanitech.com/2009/01/sd-card-interfacing-with-atmega8-fat32.html
 
-#define F_CPU 8000000UL		//freq 8 MHz
+#define F_CPU 16000000UL		//freq 16 MHz
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
@@ -24,14 +25,18 @@
 
 void port_init(void)
 {
-PORTA = 0x00;
-DDRA  = 0x00;
-PORTB = 0xEF;
-DDRB  = 0xBF; //MISO line i/p, rest o/p
-PORTC = 0x00;
-DDRC  = 0x00;
-PORTD = 0x00;
-DDRD  = 0xFE;
+    //PORTA = 0x00;		//no port A on this device, leave commented out for now
+    //DDRA  = 0x00;
+
+    PORTB = 0xEF;
+    DDRB  = 0xBF;       //MISO line i/p, rest o/p
+
+    PORTC = 0x00;
+    DDRC  = 0x00;
+
+    PROTD = 0x00;
+    PORTD |= (1<<5);    //output high on CS pin
+    DDRD  = 0xFE;
 }
 
 
@@ -100,7 +105,7 @@ switch (cardType)
 }
 
 
-SPI_HIGH_SPEED;	//SCK - 4 MHz
+SPI_HIGH_SPEED;	//SCK - 8 MHz
 _delay_ms(1);   //some delay
 
 
@@ -152,7 +157,7 @@ transmitString_F(PSTR("> Select Option (0-9): "));
 
 /*WARNING: If option 0, 1 or 3 is selected, the card may not be detected by PC/Laptop again,
 as it disturbs the FAT format, and you may have to format it again with FAT32.
-This options are given for learnig the raw data transfer to & from the SD Card*/
+This options are given for learning the raw data transfer to & from the SD Card*/
 
 option = receiveByte();
 transmitByte(option);

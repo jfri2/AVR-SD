@@ -1,12 +1,16 @@
-//**************************************************************
-// ****** FUNCTIONS FOR SPI COMMUNICATION *******
-//**************************************************************
-//Controller: ATmega32 (8 Mhz internal)
-//Compiler: AVR-GCC
-//Author: CC Dharmani, Chennai (India)
-// www.dharmanitech.com
-//Date: 18 April 2009
-//**************************************************************
+//*******************************************************
+// **** ROUTINES FOR FAT32 IMPLEMATATION OF SD CARD ****
+//**********************************************************
+//Controller: ATmega328p (Clock: 16 Mhz-internal)
+//Compiler	: AVR-GCC (Atmel Studio 6.2)
+//Version 	: 0.1
+//Author	: CC Dharmani, Chennai (India)
+//Ported by : Fritz, John (USA)
+//			  www.dharmanitech.com
+//Date		: 01 June 2015
+//********************************************************
+
+//Link to the original Post: http://www.dharmanitech.com/2009/01/sd-card-interfacing-with-atmega8-fat32.html
 
 //**************************************************
 // ***** SOURCE FILE : SPI_routines.c ******
@@ -15,11 +19,12 @@
 #include "SPI_routines.h"
 
 //SPI initialize for SD card
-//clock rate: 125Khz
+//clock rate: 4Mhz (SPI2X)
 void spi_init(void)
 {
-SPCR = 0x52; //setup SPI: Master mode, MSB first, SCK phase low, SCK idle low
-SPSR = 0x00;
+//SPCR = 0x52; //setup SPI: Master mode, MSB first, SCK phase low, SCK idle low
+//SPSR = 0x00;
+    SPI_HIGH_SPEED;
 }
 
 unsigned char SPI_transmit(unsigned char data)

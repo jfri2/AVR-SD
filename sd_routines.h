@@ -1,13 +1,16 @@
-//**************************************************************
-// ****** FUNCTIONS FOR SD RAW DATA TRANSFER *******
-//**************************************************************
-//Controller: ATmega32 (Clock: 8 Mhz-internal)
-//Compiler	: AVR-GCC (winAVR with AVRStudio)
-//Version 	: 2.3
+//*******************************************************
+// **** ROUTINES FOR FAT32 IMPLEMATATION OF SD CARD ****
+//**********************************************************
+//Controller: ATmega328p (Clock: 16 Mhz-internal)
+//Compiler	: AVR-GCC (Atmel Studio 6.2)
+//Version 	: 0.1
 //Author	: CC Dharmani, Chennai (India)
+//Ported by : Fritz, John (USA)
 //			  www.dharmanitech.com
-//Date		: 08 May 2010
-//**************************************************************
+//Date		: 01 June 2015
+//********************************************************
+
+//Link to the original Post: http://www.dharmanitech.com/2009/01/sd-card-interfacing-with-atmega8-fat32.html
 
 //**************************************************
 // ***** HEADER FILE : SD_routines.h ******
@@ -20,9 +23,9 @@
 
 #define FAT_TESTING_ONLY         
 
-//use following macros if PB1 pin is used for Chip Select of SD
-#define SD_CS_ASSERT     PORTB &= ~0x02
-#define SD_CS_DEASSERT   PORTB |= 0x02
+//use following macros if PD5 pin is used for Chip Select of SD
+#define SD_CS_ASSERT     PORTD &= ~(1<<5)
+#define SD_CS_DEASSERT   PORTD |= (1<<5)
 
 //use following macros if SS (PB4) pin is used for Chip Select of SD
 //#define SD_CS_ASSERT     PORTB &= ~0x10

@@ -1,15 +1,16 @@
-//********************************************************
-// **** ROUTINES FOR FAT32 IMPLEMATATION OF SD CARD *****
-//********************************************************
-//Controller: ATmega32 (Clock: 8 Mhz-internal)
-//Compiler	: AVR-GCC (winAVR with AVRStudio)
-//Version 	: 2.3
+//*******************************************************
+// **** ROUTINES FOR FAT32 IMPLEMATATION OF SD CARD ****
+//**********************************************************
+//Controller: ATmega328p (Clock: 16 Mhz-internal)
+//Compiler	: AVR-GCC (Atmel Studio 6.2)
+//Version 	: 0.1
 //Author	: CC Dharmani, Chennai (India)
+//Ported by : Fritz, John (USA)
 //			  www.dharmanitech.com
-//Date		: 08 May 2010
+//Date		: 01 June 2015
 //********************************************************
 
-//Link to the Post: http://www.dharmanitech.com/2009/01/sd-card-interfacing-with-atmega8-fat32.html
+//Link to the original Post: http://www.dharmanitech.com/2009/01/sd-card-interfacing-with-atmega8-fat32.html
 
 //**************************************************
 // ***** HEADER FILE : FAT32.h ******
@@ -17,14 +18,14 @@
 #ifndef _FAT32_H_
 #define _FAT32_H_
 
-//Structure to access Master Boot Record for getting info about partioions
+//Structure to access Master Boot Record for getting info about partitions
 struct MBRinfo_Structure{
 unsigned char	nothing[446];		//ignore, placed here to fill the gap in the structure
 unsigned char	partitionData[64];	//partition records (16x4)
-unsigned int	signature;		//0xaa55
+unsigned int	signature;	    	//0xaa55
 };
 
-//Structure to access info of the first partioion of the disk 
+//Structure to access info of the first partition of the disk
 struct partitionInfo_Structure{ 				
 unsigned char	status;				//0x80 - active partition
 unsigned char 	headStart;			//starting head
