@@ -34,7 +34,7 @@ void port_init(void)
     PORTC = 0x00;
     DDRC  = 0x00;
 
-    PROTD = 0x00;
+    PORTD = 0x00;
     PORTD |= (1<<5);    //output high on CS pin
     DDRD  = 0xFE;
 }
@@ -43,15 +43,17 @@ void port_init(void)
 //call this routine to initialize all peripherals
 void init_devices(void)
 {
- cli();  //all interrupts disabled
- port_init();
- spi_init();
- uart0_init();
-
- MCUCR = 0x00;
- GICR  = 0x00;
- TIMSK = 0x00; //timer interrupt sources
- //all peripherals are now initialized
+	cli();  //all interrupts disabled
+	port_init();
+	spi_init();
+	uart0_init();
+ 
+	/*Already initalized to 0
+	MCUCR = 0x00;
+	GICR  = 0x00;
+	TIMSK = 0x00; //timer interrupt sources
+	**/
+	//all peripherals are now initialized
 }
 
 //*************************** MAIN *******************************//
@@ -65,7 +67,7 @@ _delay_ms(100);  //delay for VCC stabilization
 
 init_devices();
 
-PORTD |= 0x04; //switching ON the LED (for testing purpose only)
+//PORTD |= 0x04; //switching ON the LED (for testing purpose only)
 
 TX_NEWLINE;
 TX_NEWLINE;

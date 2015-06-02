@@ -28,7 +28,7 @@
 void uart0_init(void);
 unsigned char receiveByte(void);
 void transmitByte(unsigned char);
-void transmitString_F(char*);
+void transmitString_F(const char*);
 void transmitString(unsigned char*);
 void transmitHex( unsigned char dataType, unsigned long data );
 
