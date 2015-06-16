@@ -40,14 +40,16 @@ void uart0_init(void)
 //*************************************************
 unsigned char receiveByte( void )
 {
-	unsigned char data, status;
-	
-	while(!(UCSRA & (1<<RXC))); 	// Wait for incomming data
-	
-	status = UCSRA;
-	data = UDR;
-	
-	return(data);
+   unsigned char data;   							// create a variable to hold the received value
+   
+   while ( (UCSR0A & (1<<RXC0)) == 0 )			// wait until the received character flag is set
+   {
+   }
+   
+   data=UDR0;  									// load the received character into the local variable
+
+
+   return data;									// return the value
 }
 
 //***************************************************

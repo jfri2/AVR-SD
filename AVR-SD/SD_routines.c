@@ -60,7 +60,7 @@ response = SD_sendCommand(SEND_IF_COND,0x000001AA); //Check power supply status,
 retry++;
 if(retry>0xfe) 
    {
-	  TX_NEWLINE;
+	  printf("\n");
 	  SD_version = 1;
 	  cardType = 1;
 	  break;
@@ -78,7 +78,7 @@ response = SD_sendCommand(SD_SEND_OP_COND,0x40000000); //ACMD41
 retry++;
 if(retry>0xfe) 
    {
-      TX_NEWLINE;
+      printf("\n");
 	  return 2;  //time out, card initialization failed
    } 
 
@@ -96,7 +96,7 @@ if (SD_version == 2)
 	 retry++;
 	 if(retry>0xfe) 
      {
-       TX_NEWLINE;
+       printf("\n");
 	   cardType = 0;
 	   break;
      } //time out
@@ -313,9 +313,9 @@ while( totalBlocks )
   SPI_receive();
 
   SPI_receive(); //extra 8 cycles
-  TX_NEWLINE;
+  printf("\n");
   transmitString_F(PSTR(" --------- "));
-  TX_NEWLINE;
+  printf("\n");
 
   for(i=0; i<512; i++) //send the block to UART
   {
@@ -323,9 +323,9 @@ while( totalBlocks )
     transmitByte ( buffer[i] );
   }
 
-  TX_NEWLINE;
+  printf("\n");
   transmitString_F(PSTR(" --------- "));
-  TX_NEWLINE;
+  printf("\n");
   totalBlocks--;
 }
 
@@ -354,9 +354,9 @@ if(response != 0x00) return response; //check for SD status: 0x00 - OK (No flags
 
 SD_CS_ASSERT;
 
-TX_NEWLINE;
+printf("\n");
 transmitString_F(PSTR(" Enter text (End with ~): "));
-TX_NEWLINE;
+printf("\n");
 
 while( blockCounter < totalBlocks )
 {
@@ -386,9 +386,9 @@ while( blockCounter < totalBlocks )
 	 if(i == 512) break;
    }while (data != '~');
 
-   TX_NEWLINE;
+   printf("\n");
    transmitString_F(PSTR(" ---- "));
-   TX_NEWLINE;
+   printf("\n");
 
    SPI_transmit(0xfc); //Send start block token 0xfc (0x11111100)
 

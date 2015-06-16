@@ -216,10 +216,10 @@ while(1)
 			  }	
 			  else    //when flag = DELETE
 			  {
-			     TX_NEWLINE;
+			     printf("\n");
 				 transmitString_F(PSTR("Deleting.."));
-				 TX_NEWLINE;
-				 TX_NEWLINE;
+				 printf("\n");
+				 printf("\n");
 				 firstCluster = (((unsigned long) dir->firstClusterHI) << 16) | dir->firstClusterLO;
                 
 				 //mark file as 'deleted' in FAT table
@@ -247,7 +247,7 @@ while(1)
           }
           else  //when flag = GET_LIST
 		  {
-		     TX_NEWLINE;
+		     printf("\n");
 			 for(j=0; j<11; j++)
 		     {
 			   if(j == 8) transmitByte(' ');
@@ -305,8 +305,8 @@ cluster = (((unsigned long) dir->firstClusterHI) << 16) | dir->firstClusterLO;
 
 fileSize = dir->fileSize;
 
-TX_NEWLINE;
-TX_NEWLINE;
+printf("\n");
+printf("\n");
 
 while(1)
 {
@@ -407,7 +407,7 @@ else if(j == 2)
    return; //invalid file name
 else
 {
-  TX_NEWLINE;
+  printf("\n");
   transmitString_F(PSTR(" Creating File.."));
 
   cluster = getSetFreeCluster (NEXT_FREE, GET, 0);
@@ -417,7 +417,7 @@ else
   cluster = searchNextFreeCluster(cluster);
    if(cluster == 0)
    {
-      TX_NEWLINE;
+      printf("\n");
       transmitString_F(PSTR(" No free cluster!"));
 	  return;
    }
@@ -448,7 +448,7 @@ while(1)
    }
    
 
-   TX_NEWLINE;
+   printf("\n");
    transmitString_F(PSTR(" Enter text (end with ~):"));
    
    do
@@ -517,7 +517,7 @@ while(1)
 
    if(cluster == 0)
    {
-      TX_NEWLINE;
+      printf("\n");
       transmitString_F(PSTR(" No free cluster!"));
 	  return;
    }
@@ -538,9 +538,9 @@ if(appendFile)  //executes this loop if file is to be appended
   freeMemoryUpdate (REMOVE, extraMemory); //updating free memory count in FSinfo sector;
 
   
-  TX_NEWLINE;
+  printf("\n");
   transmitString_F(PSTR(" File appended!"));
-  TX_NEWLINE;
+  printf("\n");
   return;
 }
 
@@ -586,8 +586,8 @@ while(1)
 		  SD_writeSingleBlock (firstSector + sector);
 		  fileCreatedFlag = 1;
 
-		  TX_NEWLINE;
-		  TX_NEWLINE;
+		  printf("\n");
+		  printf("\n");
 		  transmitString_F(PSTR(" File Created!"));
 
 		  freeMemoryUpdate (REMOVE, fileSize); //updating free memory count in FSinfo sector
@@ -669,8 +669,8 @@ unsigned int i;
 totalMemory = totalClusters * sectorPerCluster / 1024;
 totalMemory *= bytesPerSector;
 
-TX_NEWLINE;
-TX_NEWLINE;
+printf("\n");
+printf("\n");
 transmitString_F(PSTR("Total Memory: "));
 
 displayMemory (HIGH, totalMemory);
@@ -707,10 +707,10 @@ if(!freeClusterCountUpdated)
 freeClusterCountUpdated = 1;  //set flag
 freeMemory = freeClusters * sectorPerCluster / 1024;
 freeMemory *= bytesPerSector ;
-TX_NEWLINE;
+printf("\n");
 transmitString_F(PSTR(" Free Memory: "));
 displayMemory (HIGH, freeMemory);
-TX_NEWLINE; 
+printf("\n"); 
 }
 
 //************************************************************
