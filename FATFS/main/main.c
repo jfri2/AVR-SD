@@ -15,6 +15,8 @@
 #include "rtc.h"
 #include "sound.h"
 
+#define MEDIA "MMC"
+ 
 /*
 FUSES = {0xAF, 0xC3, 0xFF};		/* ATmega64 fuses: Low, High, Extended.
 This is the fuse settings for this project. The fuse bits will be included
