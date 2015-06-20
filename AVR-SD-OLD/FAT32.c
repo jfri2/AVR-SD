@@ -195,7 +195,7 @@ while(1)
         if(dir->name[0] == EMPTY) //indicates end of the file list of the directory
 		{
 		  if((flag == GET_FILE) || (flag == DELETE))
-		      transmitString_F(PSTR("File does not exist!"));
+		      printf(("File does not exist!"));
 		  return 0;   
 		}
 		if((dir->name[0] != DELETED) && (dir->attrib != ATTR_LONG_NAME))
@@ -217,7 +217,7 @@ while(1)
 			  else    //when flag = DELETE
 			  {
 			     printf("\n");
-				 transmitString_F(PSTR("Deleting.."));
+				 printf(("Deleting.."));
 				 printf("\n");
 				 printf("\n");
 				 firstCluster = (((unsigned long) dir->firstClusterHI) << 16) | dir->firstClusterLO;
@@ -239,7 +239,7 @@ while(1)
 			        nextCluster = getSetNextCluster (firstCluster, GET, 0);
 					getSetNextCluster (firstCluster, SET, 0);
 					if(nextCluster > 0x0ffffff6) 
-					   {transmitString_F(PSTR("File deleted!"));return 0;}
+					   {printf(("File deleted!"));return 0;}
 					firstCluster = nextCluster;
 			  	 } 
 			  }
@@ -253,11 +253,11 @@ while(1)
 			   if(j == 8) transmitByte(' ');
 			   transmitByte (dir->name[j]);
 			 }
-		     transmitString_F (PSTR("   "));
+		     printf(("   "));
 		     if((dir->attrib != 0x10) && (dir->attrib != 0x08))
 			 {
-			     transmitString_F (PSTR("FILE" ));
-		         transmitString_F (PSTR("   "));
+			     printf(("FILE" ));
+		         printf(("   "));
 			     displayMemory (LOW, dir->fileSize);
 			 }
 			 else
@@ -272,7 +272,7 @@ while(1)
    if(cluster > 0x0ffffff6)
    	 return 0;
    if(cluster == 0) 
-   {transmitString_F(PSTR("Error in getting cluster"));  return 0;}
+   {printf(("Error in getting cluster"));  return 0;}
  }
 return 0;
 }
@@ -323,7 +323,7 @@ while(1)
     }
   }
   cluster = getSetNextCluster (cluster, GET, 0);
-  if(cluster == 0) {transmitString_F(PSTR("Error in getting cluster")); return 0;}
+  if(cluster == 0) {printf(("Error in getting cluster")); return 0;}
 }
 return 0;
 }
@@ -341,7 +341,7 @@ unsigned char j, k;
 for(j=0; j<12; j++)
 if(fileName[j] == '.') break;
 
-if(j>8) {transmitString_F(PSTR("Invalid fileName..")); return 1;}
+if(j>8) {printf(("Invalid fileName..")); return 1;}
 
 for(k=0; k<j; k++) //setting file name
   fileNameFAT[k] = fileName[k];
@@ -386,7 +386,7 @@ j = readFile (VERIFY, fileName);
 
 if(j == 1) 
 {
-  transmitString_F(PSTR("  File already existing, appending data..")); 
+  printf(("  File already existing, appending data..")); 
   appendFile = 1;
   cluster = appendStartCluster;
   clusterCount=0;
@@ -408,7 +408,7 @@ else if(j == 2)
 else
 {
   printf("\n");
-  transmitString_F(PSTR(" Creating File.."));
+  printf((" Creating File.."));
 
   cluster = getSetFreeCluster (NEXT_FREE, GET, 0);
   if(cluster > totalClusters)
@@ -418,7 +418,7 @@ else
    if(cluster == 0)
    {
       printf("\n");
-      transmitString_F(PSTR(" No free cluster!"));
+      printf((" No free cluster!"));
 	  return;
    }
   getSetNextCluster(cluster, SET, EOF);   //last cluster of the file, marked EOF
@@ -449,7 +449,7 @@ while(1)
    
 
    printf("\n");
-   transmitString_F(PSTR(" Enter text (end with ~):"));
+   printf((" Enter text (end with ~):"));
    
    do
    {
@@ -518,7 +518,7 @@ while(1)
    if(cluster == 0)
    {
       printf("\n");
-      transmitString_F(PSTR(" No free cluster!"));
+      printf((" No free cluster!"));
 	  return;
    }
 
@@ -539,7 +539,7 @@ if(appendFile)  //executes this loop if file is to be appended
 
   
   printf("\n");
-  transmitString_F(PSTR(" File appended!"));
+  printf((" File appended!"));
   printf("\n");
   return;
 }
@@ -588,7 +588,7 @@ while(1)
 
 		  printf("\n");
 		  printf("\n");
-		  transmitString_F(PSTR(" File Created!"));
+		  printf((" File Created!"));
 
 		  freeMemoryUpdate (REMOVE, fileSize); //updating free memory count in FSinfo sector
 	     
@@ -609,11 +609,11 @@ while(1)
 
       else
       {	
-	    transmitString_F(PSTR("End of Cluster Chain")); 
+	    printf(("End of Cluster Chain")); 
 	    return;
       }
    }
-   if(cluster == 0) {transmitString_F(PSTR("Error in getting cluster")); return;}
+   if(cluster == 0) {printf(("Error in getting cluster")); return;}
    
    prevCluster = cluster;
  }
@@ -671,7 +671,7 @@ totalMemory *= bytesPerSector;
 
 printf("\n");
 printf("\n");
-transmitString_F(PSTR("Total Memory: "));
+printf(("Total Memory: "));
 
 displayMemory (HIGH, totalMemory);
 
@@ -708,7 +708,7 @@ freeClusterCountUpdated = 1;  //set flag
 freeMemory = freeClusters * sectorPerCluster / 1024;
 freeMemory *= bytesPerSector ;
 printf("\n");
-transmitString_F(PSTR(" Free Memory: "));
+printf((" Free Memory: "));
 displayMemory (HIGH, freeMemory);
 printf("\n"); 
 }

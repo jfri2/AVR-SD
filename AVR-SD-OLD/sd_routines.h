@@ -23,9 +23,9 @@
 
 #define FAT_TESTING_ONLY         
 
-//use following macros if PD5 pin is used for Chip Select of SD
-#define SD_CS_ASSERT     PORTD &= ~(1<<5)
-#define SD_CS_DEASSERT   PORTD |= (1<<5)
+//use following macros if PD4 pin is used for Chip Select of SD
+#define SD_CS_ASSERT     PORTD &= ~(1<<4)
+#define SD_CS_DEASSERT   PORTD |= (1<<4)
 
 //use following macros if SS (PB4) pin is used for Chip Select of SD
 //#define SD_CS_ASSERT     PORTB &= ~0x10

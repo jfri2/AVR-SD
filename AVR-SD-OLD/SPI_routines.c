@@ -22,9 +22,9 @@
 //clock rate: 4Mhz (SPI2X)
 void spi_init(void)
 {
-//SPCR = 0x52; //setup SPI: Master mode, MSB first, SCK phase low, SCK idle low
-//SPSR = 0x00;
-    SPI_HIGH_SPEED;
+SPCR = 0x52; //setup SPI: Master mode, MSB first, SCK phase low, SCK idle low
+SPSR = 0x00;
+    //arSPI_HIGH_SPEED;
 }
 
 unsigned char SPI_transmit(unsigned char data)

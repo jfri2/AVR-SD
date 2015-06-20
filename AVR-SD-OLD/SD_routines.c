@@ -17,6 +17,7 @@
 //**************************************************
 #include <avr/io.h>
 #include <avr/pgmspace.h>
+#include <stdio.h>
 #include "SPI_routines.h"
 #include "SD_routines.h"
 #include "UART_routines.h"
@@ -31,11 +32,12 @@ unsigned char SD_init(void)
 {
 unsigned char i, response, SD_version;
 unsigned int retry=0 ;
-
+printf("\nWere about to send the first command...");
  for(i=0;i<10;i++)
       SPI_transmit(0xff);   //80 clock pulses spent before sending the first command
 
 SD_CS_ASSERT;
+printf("BAM! CS is now active");
 do
 {
   
@@ -43,12 +45,17 @@ do
    retry++;
    if(retry>0x20) 
    	  return 1;   //time out, card not detected
+		 printf("Card not detected\n");
    
 } while(response != 0x01);
 
 SD_CS_DEASSERT;
+printf("\nSD send command done (reset and go idle)");
+
+printf("\nTransmitting ones...");
 SPI_transmit (0xff);
 SPI_transmit (0xff);
+printf("done transmitting");
 
 retry = 0;
 
@@ -56,7 +63,7 @@ SD_version = 2; //default set to SD compliance with ver2.x;
 				//this may change after checking the next command
 do
 {
-response = SD_sendCommand(SEND_IF_COND,0x000001AA); //Check power supply status, mendatory for SDHC card
+response = SD_sendCommand(SEND_IF_COND,0x000001AA); //Check power supply status, mandatory for SDHC card
 retry++;
 if(retry>0xfe) 
    {
@@ -67,7 +74,6 @@ if(retry>0xfe)
    } //time out
 
 }while(response != 0x01);
-
 retry = 0;
 
 do
@@ -110,7 +116,7 @@ if (SD_version == 2)
 //SD_sendCommand(CRC_ON_OFF, OFF); //disable CRC; deafault - CRC disabled in SPI mode
 //SD_sendCommand(SET_BLOCK_LEN, 512); //set block size to 512; default size is 512
 
-
+printf("\nSuccessful init");
 return 0; //successful return
 }
 
@@ -314,7 +320,7 @@ while( totalBlocks )
 
   SPI_receive(); //extra 8 cycles
   printf("\n");
-  transmitString_F(PSTR(" --------- "));
+  printf((" --------- "));
   printf("\n");
 
   for(i=0; i<512; i++) //send the block to UART
@@ -324,7 +330,7 @@ while( totalBlocks )
   }
 
   printf("\n");
-  transmitString_F(PSTR(" --------- "));
+  printf((" --------- "));
   printf("\n");
   totalBlocks--;
 }
@@ -355,7 +361,7 @@ if(response != 0x00) return response; //check for SD status: 0x00 - OK (No flags
 SD_CS_ASSERT;
 
 printf("\n");
-transmitString_F(PSTR(" Enter text (End with ~): "));
+printf((" Enter text (End with ~): "));
 printf("\n");
 
 while( blockCounter < totalBlocks )
@@ -387,7 +393,7 @@ while( blockCounter < totalBlocks )
    }while (data != '~');
 
    printf("\n");
-   transmitString_F(PSTR(" ---- "));
+   printf((" ---- "));
    printf("\n");
 
    SPI_transmit(0xfc); //Send start block token 0xfc (0x11111100)

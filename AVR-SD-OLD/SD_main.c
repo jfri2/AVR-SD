@@ -81,13 +81,13 @@ int main(void)
 	//PORTD |= 0x04; //switching ON the LED (for testing purpose only)
 	printf("\n");
 	printf("\n");
-	//transmitString_F (PSTR("*********************************************"));
+	//printf(("*********************************************"));
 	printf("*********************************************");
 	printf("\n");
-	//transmitString_F (PSTR("    Dharmani's microSD Card Testing..  "));
+	//printf(("    Dharmani's microSD Card Testing..  "));
 	printf("            microSD Card Testing..  ");
 	printf("\n");
-	//transmitString_F (PSTR("*********************************************"));
+	//printf(("*********************************************"));
 	printf("*********************************************");
 	printf("\n");
 
@@ -96,6 +96,8 @@ int main(void)
 	for (i=0; i<10; i++)
 	{
 	  error = SD_init();
+	  printf("\nError value returned: %d", error);
+	  printf("\nCard type detected %d", cardType);
 	  if(!error) break;
 	}
 
@@ -109,18 +111,19 @@ int main(void)
 
 	switch (cardType)
 	{
-	  case 1:transmitString_F(PSTR("Standard Capacity Card (Ver 1.x) Detected!"));
+	  case 1: printf(("Standard Capacity Card (Ver 1.x) Detected!"));
   			 break;
-	  case 2:transmitString_F(PSTR("High Capacity Card Detected!"));
+	  case 2: printf(("High Capacity Card Detected!"));
   			 break;
-	  case 3:transmitString_F(PSTR("Standard Capacity Card (Ver 2.x) Detected!"));
+	  case 3: printf(("Standard Capacity Card (Ver 2.x) Detected!"));
   			 break;
-	  default:transmitString_F(PSTR("Unknown SD Card Detected!"));
+	  default: printf(("Unknown SD Card Detected!"));
   			 break; 
 	}
 
 
 	SPI_HIGH_SPEED;	//SCK - 8 MHz
+	printf("\nsetting spi for high speed");
 	_delay_ms(1);   //some delay
 
 
@@ -129,45 +132,45 @@ int main(void)
 	if(error) 	
 	{
 	  printf("\n");
-	  transmitString_F (PSTR("FAT32 not found!"));  //FAT32 incompatible drive
+	  printf(("FAT32 not found!"));  //FAT32 incompatible drive
 	  FAT32_active = 0;
 	}
 
 	while(1)
 	{
 	printf("\n");
-	transmitString_F(PSTR("Press any key..."));
+	printf(("Press any key..."));
 	printf("\n");
 	option = receiveByte();
 	printf("\n");
-	transmitString_F(PSTR("> 0 : Erase Blocks"));
+	printf(("> 0 : Erase Blocks"));
 	printf("\n");
-	transmitString_F(PSTR("> 1 : Write single Block"));
+	printf(("> 1 : Write single Block"));
 	printf("\n");
-	transmitString_F(PSTR("> 2 : Read single Block"));
+	printf(("> 2 : Read single Block"));
 
 	#ifndef FAT_TESTING_ONLY
 	printf("\n");
-	transmitString_F(PSTR("> 3 : Write multiple Blocks"));
+	printf(("> 3 : Write multiple Blocks"));
 	printf("\n");
-	transmitString_F(PSTR("> 4 : Read multiple Blocks"));
+	printf(("> 4 : Read multiple Blocks"));
 	#endif
 
 
 	printf("\n");
-	transmitString_F(PSTR("> 5 : Get file list"));
+	printf(("> 5 : Get file list"));
 	printf("\n");
-	transmitString_F(PSTR("> 6 : Read File"));
+	printf(("> 6 : Read File"));
 	printf("\n");
-	transmitString_F(PSTR("> 7 : Write File"));
+	printf(("> 7 : Write File"));
 	printf("\n");
-	transmitString_F(PSTR("> 8 : Delete File"));
+	printf(("> 8 : Delete File"));
 	printf("\n");
-	transmitString_F(PSTR("> 9 : Read SD Memory Capacity (Total/Free)"));
+	printf(("> 9 : Read SD Memory Capacity (Total/Free)"));
 
 	printf("\n");
 	printf("\n");
-	transmitString_F(PSTR("> Select Option (0-9): "));
+	printf(("> Select Option (0-9): ")); 
 
 
 	/*WARNING: If option 0, 1 or 3 is selected, the card may not be detected by PC/Laptop again,
@@ -183,7 +186,7 @@ int main(void)
 	  {
 		printf("\n");
 		printf("\n");
-		transmitString_F(PSTR("FAT32 options disabled!"));
+		printf(("FAT32 options disabled!"));
 		continue;
 	  } 
 	}
@@ -193,7 +196,7 @@ int main(void)
 	{
 	printf("\n");
 	printf("\n");
-	transmitString_F(PSTR("Enter the Block number (0000-9999):"));
+	printf(("Enter the Block number (0000-9999):"));
 	data = receiveByte(); transmitByte(data);
 	startBlock = (data & 0x0f) * 1000;
 	data = receiveByte(); transmitByte(data);
@@ -213,7 +216,7 @@ int main(void)
 	{
 	printf("\n");
 	printf("\n");
-	transmitString_F(PSTR("How many blocks? (000-999):"));
+	printf(("How many blocks? (000-999):"));
 	data = receiveByte(); transmitByte(data);
 	totalBlocks = (data & 0x0f) * 100;
 	data = receiveByte(); transmitByte(data);
@@ -230,13 +233,13 @@ int main(void)
 			  error = SD_erase (startBlock, totalBlocks);
 			  printf("\n");
 			  if(error)
-				  transmitString_F(PSTR("Erase failed.."));
+				  printf(("Erase failed.."));
 			  else
-				  transmitString_F(PSTR("Erased!"));
+				  printf(("Erased!"));
 			  break;
 
 	case '1': printf("\n");
-			  transmitString_F(PSTR(" Enter text (End with ~):"));
+			  printf((" Enter text (End with ~):"));
 			  i=0;
 				do
 				{
@@ -255,15 +258,15 @@ int main(void)
 				printf("\n");
 				printf("\n");
 				if(error)
-					transmitString_F(PSTR("Write failed.."));
+					printf(("Write failed.."));
 				else
-					transmitString_F(PSTR("Write successful!"));
+					printf(("Write successful!"));
 				break;
 
 	case '2': error = SD_readSingleBlock (startBlock);
 			  printf("\n");
 			  if(error)
-				transmitString_F(PSTR("Read failed.."));
+				printf(("Read failed.."));
 			  else
 			  {
 				for(i=0;i<512;i++)
@@ -273,7 +276,7 @@ int main(void)
 				}
 				printf("\n");
 				printf("\n");
-				transmitString_F(PSTR("Read successful!"));
+				printf(("Read successful!"));
 			  }
 
 			  break;
@@ -284,17 +287,17 @@ int main(void)
 			  error = SD_writeMultipleBlock (startBlock, totalBlocks);
 			  printf("\n");
 			  if(error)
-				transmitString_F(PSTR("Write failed.."));
+				printf(("Write failed.."));
 			  else
-				transmitString_F(PSTR("Write successful!"));
+				printf(("Write successful!"));
 			  break;
 
 	case '4': error = SD_readMultipleBlock (startBlock, totalBlocks);
 			  printf("\n");
 			  if(error)
-				transmitString_F(PSTR("Read failed.."));
+				printf(("Read failed.."));
 			  else
-				transmitString_F(PSTR("Read successful!"));
+				printf(("Read successful!"));
 			  break;
 	#endif
 
@@ -306,7 +309,7 @@ int main(void)
 	case '7': 
 	case '8': printf("\n");
 			  printf("\n");
-			  transmitString_F(PSTR("Enter file name: "));
+			  printf(("Enter file name: "));
 			  for(i=0; i<13; i++)
 				fileName[i] = 0x00;   //clearing any previously stored file name
 			  i=0;
@@ -328,7 +331,7 @@ int main(void)
 				if(data <0x20 || data > 0x7e) continue;  //check for valid English text character
 				transmitByte(data);
 				fileName[i++] = data;
-				if(i==13){transmitString_F(PSTR(" file name too long..")); break;}
+				if(i==13){printf((" file name too long..")); break;}
 			  }
 			  if(i>12) break;
        
@@ -346,7 +349,7 @@ int main(void)
 
 	default: printf("\n");
 			 printf("\n");
-			 transmitString_F(PSTR(" Invalid option!"));
+			 printf((" Invalid option!"));
 			 printf("\n");
 	}
 
